@@ -1,6 +1,6 @@
 # 📅 Interactive Wall Calendar Component
 
-A polished, interactive Next.js calendar built as a **Frontend Engineering Challenge** for TakeUForward.
+A polished, interactive Next.js calendar built as a **Frontend Engineering Challenge**.
 
 ## ✨ Features
 
@@ -47,9 +47,3 @@ src/
 - **AI-generated hero images** — one per month, stored in `public/images/`
 - **CSS custom properties** — month themes are applied as `--accent-*` vars on `:root` so a single CSS variable change repaints the entire UI
 - **Flip animation** — CSS `rotateX` perspective transform (not JS-driven) for clean 60fps
-
-## 📦 Submission Checklist
-
-- [x] Source code on GitHub
-- [ ] Loom / screen recording walkthrough
-- [ ] Vercel deployment link
