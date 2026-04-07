@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📅 Interactive Wall Calendar Component
 
-## Getting Started
+A polished, interactive Next.js calendar built as a **Frontend Engineering Challenge** for TakeUForward.
 
-First, run the development server:
+## ✨ Features
+
+| Feature | Details |
+|---|---|
+| **Wall Calendar Aesthetic** | 3-panel layout: hero image · date grid · notes |
+| **Day Range Selector** | Click start → click end; visual band across selected days |
+| **Holiday Markers** | Red dots + tooltip for public holidays |
+| **Notes Section** | Lined-paper textarea, auto-saves per month via `localStorage` |
+| **Month Theming** | Each month has its own accent palette injected as CSS vars |
+| **Flip Animation** | Subtle page-turn on month change |
+| **Responsive** | Desktop (side-by-side) · Tablet · Mobile (stacked) |
+| **Keyboard Navigation** | Arrow keys move focus between day cells |
+
+## 🚀 Running Locally
 
 ```bash
+cd calendar-app
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → Open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗 Architecture
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  components/Calendar/   # All UI components + CSS module
+  hooks/
+    useCalendar.ts       # Month nav + range selection state
+    useNotes.ts          # localStorage persistence per month
+  data/
+    holidays.ts          # Static holiday list
+    monthImages.ts       # 12 month themes (image + accent colors)
+  app/
+    page.tsx             # Root page
+    layout.tsx           # Google Fonts + metadata
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎨 Design Decisions
 
-## Learn More
+- **Vanilla CSS Modules** — no Tailwind, for full control and portability
+- **No backend** — all persistence via `localStorage` keyed by `YYYY-MM`
+- **AI-generated hero images** — one per month, stored in `public/images/`
+- **CSS custom properties** — month themes are applied as `--accent-*` vars on `:root` so a single CSS variable change repaints the entire UI
+- **Flip animation** — CSS `rotateX` perspective transform (not JS-driven) for clean 60fps
 
-To learn more about Next.js, take a look at the following resources:
+## 📦 Submission Checklist
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] Source code on GitHub
+- [ ] Loom / screen recording walkthrough
+- [ ] Vercel deployment link

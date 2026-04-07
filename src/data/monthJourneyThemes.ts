@@ -1,0 +1,133 @@
+export type MonthJourneyTheme = {
+  accent: string;
+  accentHover: string;
+  accentMuted: string;
+  glow: string;
+  particle: string;
+  particleSoft: string;
+  intensity: number;
+  icon: "spark" | "base" | "shield" | "flame" | "pressure" | "target" | "bolt" | "calm" | "convert" | "growth" | "expand" | "reflect";
+};
+
+export const MONTH_JOURNEY_THEMES: MonthJourneyTheme[] = [
+  {
+    accent: "#F59E0B",
+    accentHover: "#D97706",
+    accentMuted: "rgba(245, 158, 11, 0.14)",
+    glow: "rgba(245, 158, 11, 0.28)",
+    particle: "#F59E0B",
+    particleSoft: "#FCD34D",
+    intensity: 0.35,
+    icon: "spark",
+  },
+  {
+    accent: "#F97316",
+    accentHover: "#EA580C",
+    accentMuted: "rgba(249, 115, 22, 0.14)",
+    glow: "rgba(249, 115, 22, 0.3)",
+    particle: "#F97316",
+    particleSoft: "#FDBA74",
+    intensity: 0.42,
+    icon: "base",
+  },
+  {
+    accent: "#FF6A00",
+    accentHover: "#EA580C",
+    accentMuted: "rgba(255, 106, 0, 0.15)",
+    glow: "rgba(255, 106, 0, 0.34)",
+    particle: "#FF6A00",
+    particleSoft: "#FDBA74",
+    intensity: 0.5,
+    icon: "shield",
+  },
+  {
+    accent: "#FB923C",
+    accentHover: "#F97316",
+    accentMuted: "rgba(251, 146, 60, 0.15)",
+    glow: "rgba(251, 146, 60, 0.36)",
+    particle: "#FB923C",
+    particleSoft: "#FED7AA",
+    intensity: 0.6,
+    icon: "flame",
+  },
+  {
+    accent: "#F97316",
+    accentHover: "#EA580C",
+    accentMuted: "rgba(249, 115, 22, 0.16)",
+    glow: "rgba(249, 115, 22, 0.4)",
+    particle: "#F97316",
+    particleSoft: "#FDBA74",
+    intensity: 0.7,
+    icon: "pressure",
+  },
+  {
+    accent: "#FF6A00",
+    accentHover: "#EA580C",
+    accentMuted: "rgba(255, 106, 0, 0.17)",
+    glow: "rgba(255, 106, 0, 0.45)",
+    particle: "#FF6A00",
+    particleSoft: "#FDBA74",
+    intensity: 0.82,
+    icon: "target",
+  },
+  {
+    accent: "#FF7A1A",
+    accentHover: "#FF6A00",
+    accentMuted: "rgba(255, 122, 26, 0.18)",
+    glow: "rgba(255, 122, 26, 0.5)",
+    particle: "#FF7A1A",
+    particleSoft: "#FDBA74",
+    intensity: 0.95,
+    icon: "bolt",
+  },
+  {
+    accent: "#FB923C",
+    accentHover: "#F97316",
+    accentMuted: "rgba(251, 146, 60, 0.18)",
+    glow: "rgba(251, 146, 60, 0.52)",
+    particle: "#FB923C",
+    particleSoft: "#FED7AA",
+    intensity: 1,
+    icon: "calm",
+  },
+  {
+    accent: "#FF6A00",
+    accentHover: "#EA580C",
+    accentMuted: "rgba(255, 106, 0, 0.16)",
+    glow: "rgba(255, 106, 0, 0.44)",
+    particle: "#FF6A00",
+    particleSoft: "#FDBA74",
+    intensity: 0.82,
+    icon: "convert",
+  },
+  {
+    accent: "#F97316",
+    accentHover: "#EA580C",
+    accentMuted: "rgba(249, 115, 22, 0.15)",
+    glow: "rgba(249, 115, 22, 0.38)",
+    particle: "#F97316",
+    particleSoft: "#FDBA74",
+    intensity: 0.68,
+    icon: "growth",
+  },
+  {
+    accent: "#FB923C",
+    accentHover: "#F97316",
+    accentMuted: "rgba(251, 146, 60, 0.14)",
+    glow: "rgba(251, 146, 60, 0.32)",
+    particle: "#FB923C",
+    particleSoft: "#FED7AA",
+    intensity: 0.5,
+    icon: "expand",
+  },
+  {
+    accent: "#F59E0B",
+    accentHover: "#D97706",
+    accentMuted: "rgba(245, 158, 11, 0.14)",
+    glow: "rgba(245, 158, 11, 0.28)",
+    particle: "#F59E0B",
+    particleSoft: "#FCD34D",
+    intensity: 0.35,
+    icon: "reflect",
+  },
+];
