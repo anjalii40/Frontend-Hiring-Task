@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
+import { CALENDAR_YEAR, toCalendarDate } from "@/data/calendarConfig";
 
 export interface DateRange {
   start: Date | null;
@@ -7,9 +8,9 @@ export interface DateRange {
 }
 
 export function useCalendar() {
-  const today = new Date();
+  const today = toCalendarDate(new Date());
   const [viewDate, setViewDate] = useState(
-    new Date(today.getFullYear(), today.getMonth(), 1)
+    new Date(CALENDAR_YEAR, today.getMonth(), 1)
   );
   const [range, setRange] = useState<DateRange>({ start: null, end: null });
   const [isAnimating, setIsAnimating] = useState(false);
@@ -22,8 +23,9 @@ export function useCalendar() {
       setIsAnimating(true);
       setTimeout(() => {
         setViewDate((d) => {
-          const m = dir === "next" ? d.getMonth() + 1 : d.getMonth() - 1;
-          return new Date(d.getFullYear(), m, 1);
+          const nextMonth = dir === "next" ? d.getMonth() + 1 : d.getMonth() - 1;
+          const wrappedMonth = (nextMonth + 12) % 12;
+          return new Date(CALENDAR_YEAR, wrappedMonth, 1);
         });
         setIsAnimating(false);
       }, 350);

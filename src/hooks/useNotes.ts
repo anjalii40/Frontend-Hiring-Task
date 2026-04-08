@@ -39,5 +39,21 @@ export function useNotes(monthKey: string) {
     [storageKey]
   );
 
-  return { note, setNote };
+  const saveNote = useCallback(
+    (text = note) => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+
+      try {
+        localStorage.setItem(storageKey, text);
+      } catch {
+        /* ignore */
+      }
+    },
+    [note, storageKey]
+  );
+
+  return { note, setNote, saveNote };
 }

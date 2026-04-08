@@ -11,6 +11,13 @@ import {
   type Variants,
 } from "framer-motion";
 import styles from "./Calendar.module.css";
+import {
+  CALENDAR_END_DATE,
+  CALENDAR_START_DATE,
+  clampDateStringToCalendarYear,
+  toCalendarDate,
+  toInputDate,
+} from "@/data/calendarConfig";
 
 type GoalMode = "weekly" | "monthly";
 type GoalSection = "daily" | "longTerm" | "tasks";
@@ -74,12 +81,6 @@ const itemVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: smoothTransition },
 };
 
-function toInputDate(date: Date) {
-  const copy = new Date(date);
-  copy.setMinutes(copy.getMinutes() - copy.getTimezoneOffset());
-  return copy.toISOString().slice(0, 10);
-}
-
 function addDays(date: Date, days: number) {
   const copy = new Date(date);
   copy.setDate(copy.getDate() + days);
@@ -87,7 +88,7 @@ function addDays(date: Date, days: number) {
 }
 
 function getInitialState(): GoalState {
-  const today = new Date();
+  const today = toCalendarDate(new Date());
 
   return {
     dailyTarget: 5,
@@ -117,6 +118,8 @@ function getStoredState(): GoalState {
       dailyTarget: clampNumber(Number(parsed.dailyTarget ?? fallback.dailyTarget), 1, 99),
       longTermTarget: clampNumber(Number(parsed.longTermTarget ?? fallback.longTermTarget), 1, 999),
       longTermMode,
+      rangeStart: clampDateStringToCalendarYear(parsed.rangeStart ?? fallback.rangeStart, fallback.rangeStart),
+      rangeEnd: clampDateStringToCalendarYear(parsed.rangeEnd ?? fallback.rangeEnd, fallback.rangeEnd),
     };
   } catch {
     return fallback;
@@ -249,6 +252,63 @@ function ProgressBar({
         animate={{ width: `${value}%` }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       />
+    </div>
+  );
+}
+
+function TargetStepper({
+  id,
+  label,
+  value,
+  min,
+  max,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onChange: (value: number) => void;
+}) {
+  const setNextValue = (nextValue: number) => {
+    onChange(clampNumber(nextValue, min, max));
+  };
+
+  return (
+    <div className={styles.targetStepper} id={id} role="group" aria-label={label}>
+      <motion.button
+        type="button"
+        className={styles.targetStepperBtn}
+        onClick={() => setNextValue(value - 1)}
+        disabled={value <= min}
+        aria-label={`Decrease ${label}`}
+        whileHover={{ scale: value <= min ? 1 : 1.06 }}
+        whileTap={{ scale: value <= min ? 1 : 0.94 }}
+      >
+        −
+      </motion.button>
+      <motion.span
+        key={value}
+        className={styles.targetStepperValue}
+        initial={{ y: 6, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+        aria-live="polite"
+      >
+        {value}
+      </motion.span>
+      <motion.button
+        type="button"
+        className={styles.targetStepperBtn}
+        onClick={() => setNextValue(value + 1)}
+        disabled={value >= max}
+        aria-label={`Increase ${label}`}
+        whileHover={{ scale: value >= max ? 1 : 1.06 }}
+        whileTap={{ scale: value >= max ? 1 : 0.94 }}
+      >
+        +
+      </motion.button>
     </div>
   );
 }
@@ -392,10 +452,8 @@ export default function GoalTracker() {
     () => state.tasks.filter((task) => task.completed).length,
     [state.tasks]
   );
-  const dailyPercent = getPercent(completedTasks, state.dailyTarget);
   const dailyComplete = state.dailyTarget > 0 && completedTasks >= state.dailyTarget;
   const longTermPercent = getPercent(completedTasks, state.longTermTarget);
-  const remainingDaily = Math.max(state.dailyTarget - completedTasks, 0);
   const remainingLongTerm = Math.max(state.longTermTarget - completedTasks, 0);
   const sortedTasks = useMemo(
     () => [...state.tasks].sort((a, b) => Number(a.completed) - Number(b.completed)),
@@ -477,42 +535,31 @@ export default function GoalTracker() {
       aria-labelledby="goal-tracker-title"
     >
       <motion.div className={styles.goalHeader} variants={itemVariants}>
-        <div>
+        <div className={styles.goalHeaderInfo}>
           <span className={styles.goalEyebrow}>Goal tracker</span>
           <h2 id="goal-tracker-title" className={styles.goalTitle}>
-            Daily streak
+            Daily Streak
           </h2>
         </div>
         <div className={styles.goalSummaryPill} aria-label={`${completedTasks} of ${state.tasks.length} tasks done`}>
           <AnimatePresence>
             {showDailyConfetti && <DailyGoalConfetti />}
           </AnimatePresence>
-          <div className={styles.goalBatteryShell}>
-            <motion.span
-              className={styles.goalBatteryFill}
-              initial={{ width: 0 }}
-              animate={{ width: `${getPercent(completedTasks, state.tasks.length)}%` }}
-              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            />
-            <span className={styles.goalBatterySegments} aria-hidden="true">
-              <span />
-              <span />
-              <span />
+          <div className={styles.goalSplitStat}>
+            <span className={styles.goalSplitCount}>
+              <AnimatedNumber value={completedTasks} />
+              <span>/</span>
+              <AnimatedNumber value={state.tasks.length} />
             </span>
-            <motion.span
-              className={styles.goalBatteryShine}
-              animate={{ x: ["-130%", "130%"] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.1 }}
-              aria-hidden="true"
-            />
-            <span className={styles.goalBatteryLabel}>
-              <span className={styles.goalSummaryCount}>
-                <AnimatedNumber value={completedTasks} />
-                <span>/</span>
-                <AnimatedNumber value={state.tasks.length} />
-              </span>
-              <span className={styles.goalSummaryDone}>Done</span>
-            </span>
+            <span className={styles.goalSplitLabel}>Done</span>
+            <div className={styles.goalSplitTrack} aria-hidden="true">
+              <motion.span
+                className={styles.goalSplitFill}
+                initial={{ width: 0 }}
+                animate={{ width: `${getPercent(completedTasks, state.tasks.length)}%` }}
+                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </div>
           </div>
         </div>
       </motion.div>
@@ -526,38 +573,22 @@ export default function GoalTracker() {
           onToggle={() => toggleSection("daily")}
         >
           <div className={styles.compactFieldRow}>
-            <label className={styles.inputLabel} htmlFor="daily-target">
-              Target
-            </label>
-            <input
+            <span className={`${styles.inputLabel} ${styles.inlineFieldLabel}`}>Target</span>
+            <TargetStepper
               id="daily-target"
-              className={styles.goalInput}
-              type="number"
-              min="1"
-              max="99"
+              label="daily target"
               value={state.dailyTarget}
-              onChange={(event) =>
+              min={1}
+              max={99}
+              onChange={(value) =>
                 setState((current) => ({
                   ...current,
-                  dailyTarget: clampNumber(Number(event.target.value), 1, 99),
+                  dailyTarget: value,
                 }))
               }
             />
           </div>
-
-          <div className={styles.progressMeta}>
-            <span>
-              <AnimatedNumber value={completedTasks} /> completed /{" "}
-              <AnimatedNumber value={state.dailyTarget} /> target
-            </span>
-            <strong>
-              <AnimatedNumber value={dailyPercent} suffix="%" />
-            </strong>
-          </div>
-          <ProgressBar value={dailyPercent} label="Daily goal progress" />
-          <p className={styles.goalInsight}>
-            <AnimatedNumber value={remainingDaily} /> remaining today
-          </p>
+          <p className={styles.goalComment}>Set how many problems you want to finish today.</p>
         </GoalDropdown>
 
         <GoalDropdown
@@ -592,6 +623,8 @@ export default function GoalTracker() {
                 onChange={(event) =>
                   setState((current) => ({ ...current, rangeStart: event.target.value }))
                 }
+                min={CALENDAR_START_DATE}
+                max={CALENDAR_END_DATE}
               />
             </label>
             <label className={styles.inputLabel} htmlFor="range-end">
@@ -602,27 +635,29 @@ export default function GoalTracker() {
                 type="date"
                 value={state.rangeEnd}
                 onChange={(event) =>
-                  setState((current) => ({ ...current, rangeEnd: event.target.value }))
+                  setState((current) => ({
+                    ...current,
+                    rangeEnd: clampDateStringToCalendarYear(event.target.value, current.rangeEnd),
+                  }))
                 }
+                min={CALENDAR_START_DATE}
+                max={CALENDAR_END_DATE}
               />
             </label>
           </div>
 
           <div className={styles.compactFieldRow}>
-            <label className={styles.inputLabel} htmlFor="long-term-target">
-              Total tasks
-            </label>
-            <input
+            <span className={`${styles.inputLabel} ${styles.inlineFieldLabel}`}>Total tasks</span>
+            <TargetStepper
               id="long-term-target"
-              className={styles.goalInput}
-              type="number"
-              min="1"
-              max="999"
+              label="monthly progress target"
               value={state.longTermTarget}
-              onChange={(event) =>
+              min={1}
+              max={999}
+              onChange={(value) =>
                 setState((current) => ({
                   ...current,
-                  longTermTarget: clampNumber(Number(event.target.value), 1, 999),
+                  longTermTarget: value,
                 }))
               }
             />

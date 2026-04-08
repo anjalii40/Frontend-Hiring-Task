@@ -74,11 +74,12 @@ const MONTH_ICON_PATHS: Record<MonthJourneyTheme["icon"], string[]> = {
 interface HeroImageProps {
   monthIndex: number;
   monthLabel: string;
+  year: number;
   icon: MonthJourneyTheme["icon"];
   theme: MonthTheme;
 }
 
-export default function HeroImage({ monthIndex, monthLabel, icon, theme }: HeroImageProps) {
+export default function HeroImage({ monthIndex, monthLabel, year, icon, theme }: HeroImageProps) {
   const message = MONTH_MESSAGES[monthIndex] ?? MONTH_MESSAGES[0];
   const iconPaths = MONTH_ICON_PATHS[icon];
 
@@ -86,12 +87,12 @@ export default function HeroImage({ monthIndex, monthLabel, icon, theme }: HeroI
     <div className={styles.heroWrapper}>
       <AnimatePresence mode="wait">
         <motion.div
-          key={monthIndex}
-          className={styles.heroTextPanel}
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.34, ease: [0.4, 0, 0.2, 1] }}
+          key={`bg-${monthIndex}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className={styles.heroBackground}
         >
           <Image
             src={theme.image}
@@ -99,13 +100,25 @@ export default function HeroImage({ monthIndex, monthLabel, icon, theme }: HeroI
             fill
             priority
             className={styles.heroImg}
-            sizes="(max-width: 768px) 100vw, 320px"
+            sizes="(max-width: 1120px) 100vw, 1120px"
           />
           <div className={styles.heroOverlay} />
+        </motion.div>
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`text-${monthIndex}`}
+          className={styles.heroTextPanel}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.34, ease: [0.4, 0, 0.2, 1] }}
+        >
           <motion.svg
             className={styles.heroMonthIcon}
-            width="54"
-            height="54"
+            width="34"
+            height="34"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -113,18 +126,17 @@ export default function HeroImage({ monthIndex, monthLabel, icon, theme }: HeroI
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
-            animate={{ y: [0, -4, 0], scale: [1, 1.04, 1] }}
+            animate={{ y: [0, -3, 0], scale: [1, 1.04, 1] }}
             transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
           >
             {iconPaths.map((path) => (
               <path key={path} d={path} />
             ))}
           </motion.svg>
-          <div className={styles.heroBrand}>
-            <span className={styles.heroBrandMark}>F</span>
-            <span>takeUforward</span>
+          <div className={styles.heroDateLockup}>
+            <div className={styles.heroMonthName}>{monthLabel}</div>
+            <div className={styles.heroYear}>{year}</div>
           </div>
-          <span className={styles.heroMonthBadge}>{monthLabel}</span>
           <h2 className={styles.heroModeTitle}>{message.title}</h2>
           <p className={styles.heroQuote}>{message.quote}</p>
           <span className={styles.heroFooterLine}>Consistency beats panic.</span>

@@ -13,6 +13,7 @@ import { useCalendar } from "@/hooks/useCalendar";
 import { useNotes } from "@/hooks/useNotes";
 import { MONTH_JOURNEY_THEMES } from "@/data/monthJourneyThemes";
 import { MONTH_THEMES } from "@/data/monthImages";
+import { toInputDate } from "@/data/calendarConfig";
 
 const MONTH_NAMES = [
   "January","February","March","April","May","June",
@@ -20,12 +21,6 @@ const MONTH_NAMES = [
 ];
 
 type ThemeMode = "light" | "dark";
-
-function toInputDate(date: Date) {
-  const copy = new Date(date);
-  copy.setMinutes(copy.getMinutes() - copy.getTimezoneOffset());
-  return copy.toISOString().slice(0, 10);
-}
 
 // Framer Motion variants — subtle fade + slight upward motion
 const baseTransition: Transition = { duration: 0.3, ease: [0.4, 0, 0.2, 1] };
@@ -62,8 +57,16 @@ export default function CalendarContainer() {
   const dark = themeMode === "dark";
   const [isRangeSelecting, setIsRangeSelecting] = useState(false);
   const [dailyNoteDate, setDailyNoteDate] = useState(() => toInputDate(today));
-  const { note: monthlyNote, setNote: setMonthlyNote } = useNotes(monthKey);
-  const { note: dailyNote, setNote: setDailyNote } = useNotes(`day-${dailyNoteDate}`);
+  const {
+    note: monthlyNote,
+    setNote: setMonthlyNote,
+    saveNote: saveMonthlyNote,
+  } = useNotes(monthKey);
+  const {
+    note: dailyNote,
+    setNote: setDailyNote,
+    saveNote: saveDailyNote,
+  } = useNotes(`day-${dailyNoteDate}`);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -117,11 +120,18 @@ export default function CalendarContainer() {
         variants={cardVariants}
         initial="hidden"
         animate="visible"
-        whileHover={{ scale: 1.002 }}
       >
+        <div className={styles.spiralContainer} aria-hidden="true">
+          {Array.from({ length: 28 }).map((_, i) => (
+            <div key={i} className={styles.spiralRing}>
+              <div className={styles.spiralHole} />
+              <div className={styles.spiralWire} />
+            </div>
+          ))}
+        </div>
         <div className={styles.calendarInner}>
 
-          {/* LEFT — Motivational month panel */}
+          {/* TOP — Motivational month panel (Hero) */}
           <motion.div
             className={styles.leftPanel}
             custom={0}
@@ -132,9 +142,14 @@ export default function CalendarContainer() {
             <HeroImage
               monthIndex={month}
               monthLabel={MONTH_NAMES[month]}
+              year={year}
               icon={monthTheme.icon}
               theme={imageTheme}
             />
+            {/* Geometric divider matching wall calendar style */}
+            <div className={styles.heroGeometricOverlay}>
+              <div className={styles.heroGeometricCutout} />
+            </div>
           </motion.div>
 
           {/* CENTER — Calendar grid */}
@@ -185,6 +200,7 @@ export default function CalendarContainer() {
               today={today}
               range={range}
               onDayClick={(date) => {
+                setDailyNoteDate(toInputDate(date));
                 if (isRangeSelecting) handleDayClick(date);
               }}
             />
@@ -212,12 +228,12 @@ export default function CalendarContainer() {
             <NotesSection
               monthlyNote={monthlyNote}
               setMonthlyNote={setMonthlyNote}
+              saveMonthlyNote={saveMonthlyNote}
               dailyNote={dailyNote}
               setDailyNote={setDailyNote}
+              saveDailyNote={saveDailyNote}
               dailyDate={dailyNoteDate}
-              setDailyDate={setDailyNoteDate}
-              monthLabel={MONTH_NAMES[month]}
-              year={year}
+              range={range}
             />
           </motion.div>
 
