@@ -10,7 +10,7 @@ A beautiful, functional, and highly interactive wall calendar built for the mode
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animated-purple?style=flat-square&logo=framer)](https://www.framer.com/motion/)
 
-[Live Demo](http://localhost:3000) • [Video Walkthrough](#)
+[Live Demo](http://localhost:3000) • [Video Walkthrough](https://www.loom.com/share/c7e0245bea1e4096b2eedef64eb81512)
 
 </div>
 
