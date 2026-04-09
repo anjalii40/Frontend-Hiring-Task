@@ -1,4 +1,4 @@
-/* ── Design Token Reset ── */
+/* ── TUF Design Token Reset ── */
 *,
 *::before,
 *::after {
@@ -7,7 +7,7 @@
   padding: 0;
 }
 
-/* ── Dark Theme ── */
+/* ── TUF Dark Theme ── */
 :root {
   /* Colors */
   --bg:           #020617;
