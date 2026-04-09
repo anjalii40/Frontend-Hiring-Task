@@ -9,9 +9,18 @@ A beautiful, functional, and highly interactive wall calendar built for the mode
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animated-purple?style=flat-square&logo=framer)](https://www.framer.com/motion/)
 
-[Live Demo](http://localhost:3000) • [Video Walkthrough](https://www.loom.com/share/c7e0245bea1e4096b2eedef64eb81512)
+[Live Demo](https://frontend-hiring-task.vercel.app/) • [Video Walkthrough](https://www.loom.com/share/c7e0245bea1e4096b2eedef64eb81512)
 
 </div>
+
+---
+
+## 📺 Demo & Walkthrough
+
+Check out the interactive features of the calendar:
+
+- 🚀 **[Live Demo Hosted on Vercel](https://frontend-hiring-task.vercel.app/)**
+- 🎥 **[Video Walkthrough on Loom](https://www.loom.com/share/c7e0245bea1e4096b2eedef64eb81512)**
 
 ---
 
