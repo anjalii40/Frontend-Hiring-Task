@@ -3,7 +3,7 @@
 # Interactive Wall Calendar ✨
 
 A beautiful, functional, and highly interactive wall calendar built for the modern web.  
-*Built for the Take U Forward Frontend Engineering Challenge.*
+*A polished, beautiful frontend component challenge.*
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
@@ -92,4 +92,4 @@ src/
 - **Content First:** The UI is intentionally compact. We use an 8px grid system and tabular-nums for crisp layout math.
 - **Local Persistence:** There is NO backend. All interactions write functionally to `localStorage` ensuring instant load times and data privacy.
 
-*Created with passion for the takeUforward community.*
+*Created with passion.*

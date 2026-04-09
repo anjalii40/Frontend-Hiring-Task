@@ -37,7 +37,7 @@ type GoalState = {
   tasks: GoalTask[];
 };
 
-const STORAGE_KEY = "tuf-goal-tracker-v1";
+const STORAGE_KEY = "app-goal-tracker-v1";
 const smoothTransition: Transition = { duration: 0.28, ease: [0.4, 0, 0.2, 1] };
 
 const defaultTasks: GoalTask[] = [

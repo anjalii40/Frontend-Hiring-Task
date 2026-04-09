@@ -52,7 +52,7 @@ export default function CalendarContainer() {
 
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
     if (typeof window === "undefined") return "dark";
-    return window.localStorage.getItem("tuf-calendar-theme") === "light" ? "light" : "dark";
+    return window.localStorage.getItem("app-calendar-theme") === "light" ? "light" : "dark";
   });
   const dark = themeMode === "dark";
   const [isRangeSelecting, setIsRangeSelecting] = useState(false);
@@ -71,7 +71,7 @@ export default function CalendarContainer() {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
     document.documentElement.classList.toggle("light", !dark);
-    window.localStorage.setItem("tuf-calendar-theme", themeMode);
+    window.localStorage.setItem("app-calendar-theme", themeMode);
   }, [dark, themeMode]);
 
   const animClass = isAnimating
@@ -110,7 +110,7 @@ export default function CalendarContainer() {
           onClick={() => setThemeMode((current) => (current === "dark" ? "light" : "dark"))}
         >
           <span className={styles.orangeDot} aria-hidden="true" />
-          {dark ? "TUF Dark" : "TUF Light"}
+          {dark ? "Dark Theme" : "Light Theme"}
         </button>
       </motion.div>
 
