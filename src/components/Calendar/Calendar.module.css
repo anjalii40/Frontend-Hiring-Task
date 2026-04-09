@@ -1385,30 +1385,45 @@
   .spiralHole { display: none; }
   .spiralWire { height: 16px; width: 6px; }
   .heroWrapper {
-    min-height: 150px;
     height: auto;
-    padding: 0.6rem;
   }
   .heroGeometricOverlay {
     display: none;
   }
   .heroTextPanel {
-    min-height: 170px;
+    min-height: 200px;
     padding: 0.85rem;
   }
   .heroMonthIcon {
-    width: 34px;
-    height: 34px;
-    top: 0.75rem;
-    right: 0.75rem;
+    width: 26px;
+    height: 26px;
+    top: 1rem;
+    left: 1rem;
+  }
+  .heroDateLockup {
+    top: 1rem;
+    right: 1rem;
+  }
+  .heroMonthName {
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+  }
+  .heroYear {
+    font-size: 0.65rem;
   }
   .heroModeTitle {
-    font-size: 1.25rem;
-    max-width: 80%;
+    font-size: 1.8rem;
+    max-width: 100%;
+    margin-top: 1.5rem;
   }
   .heroQuote {
-    font-size: 0.8rem;
-    max-width: 92%;
+    font-size: 0.85rem;
+    max-width: 95%;
+  }
+  .heroFooterLine {
+    font-size: 0.5rem;
+    bottom: 1rem;
+    margin-top: 1rem;
   }
   .centerPanel {
     padding: 1.25rem 0.85rem;
